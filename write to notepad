@@ -1,0 +1,38 @@
+package test;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ * Created by  on 15/02/2018.
+ */
+public class writetoNotepad {
+    static String text = "CCV***\\*CI1\\FCR\\T*C07\\";
+    static String word1 = "*";
+
+    public static void main(String[] args) throws  Exception {
+    // System.err.println(readfile(".\\Data\\customscript.txt"));
+
+
+    }
+   public static String readfile(String filepath) throws  Exception{
+
+
+       String filename = filepath;
+       String ret="";
+       BufferedReader reader = new BufferedReader(new FileReader(filename));
+
+       try{
+           String line;
+           //as long as there are lines in the file, print them
+           while((line = reader.readLine()) != null){
+              ret=ret+line;
+           }
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
+return ret;
+   }
+}
