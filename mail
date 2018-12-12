@@ -1,0 +1,103 @@
+package test;
+
+import microsoft.exchange.webservices.data.core.ExchangeService;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
+import microsoft.exchange.webservices.data.credential.ExchangeCredentials;
+import microsoft.exchange.webservices.data.credential.WebCredentials;
+import microsoft.exchange.webservices.data.property.complex.EmailAddress;
+import microsoft.exchange.webservices.data.property.complex.MessageBody;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
+
+/**
+ * Created by  on 7/03/2018.
+ */
+public class Test_mail {
+
+
+
+    public static void main(String[] args) throws Exception {
+
+
+
+List<String> recipients= new ArrayList<>();
+        recipients.add("");
+        recipients.add("");
+        recipients.add("");
+        //sendEmail(body.toString(),"Test mail for Trace from java",recipients,"");
+
+    }
+
+    public static String htmlmessage(HashMap<String, String> data) throws Exception{
+        StringBuilder string= new  StringBuilder();
+        string.append("<html><body><table width=\"40%\" border=\"2\" style=\"text-align:center; border-collapse:collapse\"");
+        string.append("<tr ><th style=\"border:2px solid black\">Trace</th><th style=\"border:2px solid black\">Status</th>");
+
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            if(value.equalsIgnoreCase("N")){
+                string.append("<tr><td style=\"border-right:2px solid black\">"+key+"</td><td style=\"color:red\">&#10008;</td>");
+            }else if(value.equalsIgnoreCase("Y")){
+                string.append("<tr><td style=\"border-right:2px solid black\">"+key+"</td><td style=\"color:#49FF33\">&#10004;</td>");
+            }
+
+        }
+
+        string.append("</table></body></html>");
+       return string.toString();
+    }
+
+
+
+
+
+
+    public static void  sendEmail(String body, String subject, List<String> recipients, String from) throws URISyntaxException {
+      ExchangeService  service = new ExchangeService();
+        ExchangeCredentials credentials = new WebCredentials("p752665", "Password8");
+        service.setCredentials(credentials);
+        service.setUrl(new URI("https://webmail2.nab.com.au/ews/Exchange.asmx"));
+
+        try
+        {
+            EmailMessage replymessage = new EmailMessage(service);
+            EmailAddress fromEmailAddress = new EmailAddress(from);
+            replymessage.setFrom(fromEmailAddress);
+            for(String rec:recipients) {
+                replymessage.getToRecipients().add(rec);
+            }
+            //replymessage.setInReplyTo(recipients);
+            replymessage.setSubject(subject);
+            replymessage.setBody(new MessageBody(body));
+            replymessage.send();
+
+        }catch (Exception e)
+        {
+           e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+}
+
